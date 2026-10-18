@@ -1,0 +1,41 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="description" content="THE BOSS is a personal software development project for document review, traceable workspace ledgers and verifiable recovery.">
+<title>THE BOSS | Software project and recovery engineering</title>
+<style>:root{color-scheme:light;--ink:#183335;--accent:#17675e;--paper:#f6f5f0;--line:#d3ddd7}*{box-sizing:border-box}body{margin:0;background:var(--paper);color:var(--ink);font:18px/1.65 system-ui,-apple-system,"Segoe UI",sans-serif}header,main,footer{max-width:880px;margin:auto;padding:24px}header{display:flex;justify-content:space-between;gap:24px;border-bottom:1px solid var(--line)}header a{font-weight:650}main{padding-top:48px;padding-bottom:48px}h1{font-size:clamp(2rem,6vw,3.3rem);line-height:1.15;letter-spacing:-.03em;margin:0 0 24px}h2{font-size:1.3rem;line-height:1.3;margin:36px 0 12px}p,ul{margin:0 0 20px}a{color:var(--accent);text-underline-offset:.18em}a:focus-visible{outline:3px solid var(--accent);outline-offset:5px}.eyebrow{font-size:.85rem;letter-spacing:.1em;text-transform:uppercase;font-weight:650;margin-bottom:16px}.status{border-left:4px solid var(--accent);padding:16px 20px;background:#e9efea;margin:28px 0}code{font-size:.92em;overflow-wrap:anywhere}footer{border-top:1px solid var(--line);font-size:.9rem}li{margin-bottom:10px}@media(max-width:480px){body{font-size:16px}header,main,footer{padding:20px}main{padding-top:36px}}</style>
+</head>
+<body>
+<header><a href="index.html" aria-current="page">THE BOSS</a><nav aria-label="Main navigation"><a href="#engineering">Engineering</a> · <a href="#recovery">Recovery</a> · <a href="privacy.html">Privacy policy</a></nav></header>
+<main>
+<p class="eyebrow">Personal software development project</p>
+<h1>Documents, review and a recoverable ledger.</h1>
+<p>THE BOSS is a personal, non-commercial software project for organising financial source documents, reviewing extracted information and maintaining a traceable workspace ledger. Development focuses on preserving the relationship between a document, its reviewed records and the evidence needed to recover a workspace.</p>
+<div class="status"><strong>Development status:</strong> a private codebase under active development. This public site describes the software and its recovery engineering. It offers no public application, financial service, account sign-in or access to private workspaces.</div>
+<h2>What the software brings together</h2>
+<ul>
+<li><strong>Workspace records:</strong> a local SQLite ledger associated with a specific workspace identity.</li>
+<li><strong>Source documents:</strong> encrypted originals retained for authentication and later review.</li>
+<li><strong>Review evidence:</strong> checkpoint ledgers and consistency checks used to assess whether records survive an export and restore.</li>
+<li><strong>Portable recovery:</strong> supported export packages and isolated restore tools that validate compatibility before accepting a workspace.</li>
+</ul>
+<p>A simplified workflow is: source document → extracted information → owner review → ledger and checkpoint evidence → portable recovery package. Private records and original documents are not published on this site.</p>
+<h2 id="engineering">The software engineering work</h2>
+<p>The recovery components use Python on Windows and SQLite. Development work includes checking physical database schemas and fingerprints, maintaining compatible export and restore components, packaging dependencies for offline installation, and recording reproducible integrity checks.</p>
+<p>Recovery validation checks database integrity, workspace identity, supported financial-row preservation, checkpoint ledgers and authentication of encrypted original documents. Synthetic tests use fictional records and disposable credentials so that recovery behaviour can be tested without publishing private data.</p>
+<p>The application source remains private. This website contains only public documentation; it is not a source-code release or a download portal.</p>
+<h2 id="recovery">Recovery is part of the project</h2>
+<p>The backup layer uses existing open-source tools: <a href="https://restic.net/">restic</a> creates authenticated encrypted snapshots, and <a href="https://rclone.org/">rclone</a> transfers encrypted repository files to owner-controlled storage. Those tools are not presented as software developed by this project.</p>
+<p>An encrypted off-site copy has passed an independent download and complete repository integrity check with the local backup drive disconnected. Snapshot mappings, file checksums and recovery-kit receipts were verified. This demonstrates that the captured repository can be read independently of that drive; it does not demonstrate complete recovery of every source or a working application on replacement hardware.</p>
+<p>Remaining engineering work includes complete source coverage and a clean-machine recovery rehearsal. Current verification has not established full replacement-PC or desktop-application recovery. No recurring backup schedule or automatic pruning is enabled.</p>
+<h2>Google Drive connection and privacy</h2>
+<p>The owner's desktop backup connection requests only <code>https://www.googleapis.com/auth/drive.file</code>. This permits creating, reading, updating and deleting files created by or explicitly made available to the app. It does not grant general access to every existing Drive file, Gmail or Google Photos.</p>
+<p>Restic encrypts backup contents locally before authorised transfers. Recovery passwords are held separately. This website does not collect Google credentials, accept uploads or expose backup contents. Read the <a href="privacy.html">privacy policy</a> for the connection's data practices and account controls.</p>
+<h2>Contact</h2>
+<p>Project and privacy questions: <a href="mailto:usergrok203@gmail.com">usergrok203@gmail.com</a>.</p>
+</main>
+<footer>THE BOSS · Personal, non-commercial software project · Updated 18 October 2026</footer>
+</body>
+</html>
