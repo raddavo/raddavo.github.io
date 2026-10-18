@@ -1,0 +1,56 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="description" content="THE BOSS development notes: Python and SQLite workspace design, schema compatibility, portable recovery and synthetic validation.">
+<title>Development notes | THE BOSS software project</title>
+<style>:root{color-scheme:light;--ink:#183335;--accent:#17675e;--paper:#f6f5f0;--line:#d3ddd7}*{box-sizing:border-box}body{margin:0;background:var(--paper);color:var(--ink);font:18px/1.65 system-ui,-apple-system,"Segoe UI",sans-serif}header,main,footer{max-width:880px;margin:auto;padding:24px}header{display:flex;justify-content:space-between;gap:24px;border-bottom:1px solid var(--line)}header a{font-weight:650}main{padding-top:48px;padding-bottom:48px}h1{font-size:clamp(2rem,6vw,3.3rem);line-height:1.15;letter-spacing:-.03em;margin:0 0 24px}h2{font-size:1.3rem;line-height:1.3;margin:36px 0 12px}p,ul{margin:0 0 20px}a{color:var(--accent);text-underline-offset:.18em}a:focus-visible{outline:3px solid var(--accent);outline-offset:5px}.eyebrow{font-size:.85rem;letter-spacing:.1em;text-transform:uppercase;font-weight:650;margin-bottom:16px}.status{border-left:4px solid var(--accent);padding:16px 20px;background:#e9efea;margin:28px 0}code{font-size:.92em;overflow-wrap:anywhere}footer{border-top:1px solid var(--line);font-size:.9rem}li{margin-bottom:10px}@media(max-width:480px){body{font-size:16px}header,main,footer{padding:20px}main{padding-top:36px}}</style>
+</head>
+<body>
+<header><a href="index.html">THE BOSS</a><nav aria-label="Main navigation"><a href="engineering.html" aria-current="page">Development notes</a> · <a href="privacy.html">Privacy policy</a></nav></header>
+<main>
+<p class="eyebrow">Software engineering · Updated 18 October 2026</p>
+<h1>Inside the development work.</h1>
+<p>THE BOSS is a personal, non-commercial software project for document review and a traceable local ledger. This page documents the application and recovery engineering at a level that can be shared publicly. The implementation, private workspaces and detailed internal receipts are not published.</p>
+<h2>Application components</h2>
+<dl>
+<dt><strong>Workspace ledger</strong></dt><dd>A workspace-specific SQLite database holds records associated with that workspace. Recovery must preserve the intended workspace identity and avoid mixing records between workspaces.</dd>
+<dt><strong>Document storage</strong></dt><dd>Encrypted source originals support later review and authenticity checks. Recovering database rows alone is insufficient if their source documents cannot also be authenticated.</dd>
+<dt><strong>Checkpoint evidence</strong></dt><dd>Checkpoint ledgers and consistency checks help establish whether the supported record sets were preserved through export and restore.</dd>
+<dt><strong>Portable export and isolated restore</strong></dt><dd>Compatible Python components capture a supported package and validate it into a new destination. The selected toolchain must match the source's physical schema; a successful synthetic test alone does not establish compatibility with another workspace.</dd>
+</dl>
+<h2>A concrete compatibility problem</h2>
+<p>During recovery preparation, an exporter refused a workspace because the actual physical schema did not match its expected fingerprint. The response was to identify the mismatch and validate isolated, unchanged toolchains against their matching schemas. The source database was not migrated to make an export succeed, and fingerprint validation was not bypassed.</p>
+<p>This distinction matters in software development: a recorded schema revision and a database's actual table structure must agree with the exporter's expectations. Selecting a toolchain by name or by a successful test against a different fixture is not enough.</p>
+<h2>How recovery testing is structured</h2>
+<ol>
+<li><strong>Build a fictional fixture.</strong> Use synthetic records, synthetic documents and disposable credentials, isolated from real workspaces.</li>
+<li><strong>Establish the starting identity.</strong> Record the toolchain version, expected physical schema and fixture workspace identity before export.</li>
+<li><strong>Run the supported export.</strong> Use the toolchain's existing export path and validate the completed package.</li>
+<li><strong>Restore to a fresh destination.</strong> Exercise the corresponding restore path separately from the fixture source.</li>
+<li><strong>Compare the supported data.</strong> Check schema identity, database integrity, supported financial rows, checkpoint ledgers and source-document authentication. Count comparisons alone are not a substitute for record consistency.</li>
+<li><strong>Record the limits.</strong> A same-host isolated test is useful development evidence, but it is not a clean-OS or replacement-hardware rehearsal.</li>
+</ol>
+<h2>Recorded development milestones</h2>
+<ul>
+<li><strong>Synthetic export and restore:</strong> on 17 October 2026, two separately pinned recovery toolchains completed their matching synthetic validation. Each harness reported nine checks and seven authenticated members, with no private sources accessed. These are summaries of existing local test receipts, not a new public test run or a release certification.</li>
+<li><strong>Portable environment preparation:</strong> a recovery kit packages source and dependency wheels with SHA-256 manifests. It supports rebuilding an environment rather than treating an existing virtual environment as a portable installation.</li>
+<li><strong>Independent backup readback:</strong> encrypted repository data was downloaded and authenticated with the local backup drive disconnected. This validates the captured repository and selected recovery-kit files; it does not establish full source coverage or application startup on new hardware.</li>
+</ul>
+<h2>Remaining development work</h2>
+<ul>
+<li>A genuinely clean Windows recovery rehearsal and full desktop-application startup verification.</li>
+<li>Broader supported source coverage and compatibility validation for workspace variants.</li>
+<li>Fresh-profile authorisation recovery and a complete replacement-PC exercise.</li>
+</ul>
+<p>No application release, hosted financial service or public demo containing private records is offered here. Development status and test limitations are stated explicitly rather than claiming production readiness.</p>
+<h2>Where Google Drive, restic and rclone fit</h2>
+<p>They form a storage and transport layer around the project's recovery work. <a href="https://restic.net/">Restic</a> supplies encrypted snapshots, <a href="https://rclone.org/">rclone</a> supplies the Drive connection, and Google Drive stores the encrypted repository. They are third-party tools, not software authored by THE BOSS. The workspace ledger, physical-schema compatibility, portable export/restore validation and dependency packaging are the project-specific engineering concerns described above.</p>
+<p>The site's <a href="privacy.html">privacy policy</a> explains the owner's Google Drive connection. It does not grant access to the application, records or backups.</p>
+<h2>Public documentation and contact</h2>
+<p>The HTML source for this documentation is available in the <a href="https://github.com/raddavo/raddavo.github.io">public website repository</a>. The application code and test receipts remain private. Project questions: <a href="mailto:usergrok203@gmail.com">usergrok203@gmail.com</a>.</p>
+</main>
+<footer><a href="index.html">Return to the project overview</a> · THE BOSS · Personal, non-commercial software development</footer>
+</body>
+</html>
